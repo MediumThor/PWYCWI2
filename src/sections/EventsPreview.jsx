@@ -18,20 +18,20 @@ export default function EventsPreview() {
 
   return (
     <Section id="events" title="Upcoming Public Events">
-      <div className="max-w-4xl mx-auto">
-        {/* SailDash Events Widget */}
-        <div
-          id="saildash-events-bfMuyZXkruEgTumgYOTI"
-          data-saildash-events
-          data-club="bfMuyZXkruEgTumgYOTI"
-          data-theme="dark"
-          data-limit="10"
-          className={cn(
-            'min-h-[300px] rounded-xl border border-text/10',
-            'bg-text/5 p-6'
-          )}
-        />
-      </div>
+      {/* SailDash Events Widget */}
+      <div
+        id="saildash-events-bfMuyZXkruEgTumgYOTI"
+        data-saildash-events
+        data-club="bfMuyZXkruEgTumgYOTI"
+        data-theme="dark"
+        data-limit="10"
+        className={cn(
+          'min-h-[300px] rounded-xl border border-text/10',
+          'bg-text/5 p-6',
+          '-mx-4 sm:-mx-6 md:mx-auto md:max-w-4xl',
+          'rounded-none md:rounded-xl'
+        )}
+      />
     </Section>
   )
 }
