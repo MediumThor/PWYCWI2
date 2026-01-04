@@ -46,7 +46,8 @@ export default function Teams() {
         className={cn(
           'min-h-[300px] rounded-xl border border-text/10',
           'bg-text/5 p-6',
-          'w-full max-w-4xl mx-auto'
+          '-mx-4 sm:-mx-6 md:mx-auto md:max-w-4xl',
+          'rounded-none md:rounded-xl'
         )}
       />
     </Section>
