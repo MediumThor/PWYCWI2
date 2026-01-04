@@ -10,13 +10,13 @@ export default {
         background: '#0a0e1a',
         text: '#f5f5f5',
         accent: {
-          DEFAULT: '#007AFF',
+          DEFAULT: '#ff6b35',
           orange: '#ff6b35',
         },
       },
       fontFamily: {
-        heading: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'system-ui', 'sans-serif'],
-        body: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'SF Pro Display', 'system-ui', 'sans-serif'],
+        heading: ['Georgia', 'Times New Roman', 'serif'],
+        body: ['Georgia', 'Times New Roman', 'serif'],
       },
     },
   },
