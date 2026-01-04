@@ -49,15 +49,12 @@ export default function Programs() {
               key={program.title}
               className={cn(
                 'bg-text/5 border border-text/10 rounded-xl p-6',
-                'hover:border-accent/50 hover:-translate-y-2',
-                'transition-all duration-300 ease-out',
                 'flex flex-col items-center text-center'
               )}
             >
               <div
                 className={cn(
-                  'w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mb-4',
-                  'transition-transform duration-300 group-hover:scale-110'
+                  'w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mb-4'
                 )}
               >
                 <Icon className={cn('w-8 h-8', program.color)} />
