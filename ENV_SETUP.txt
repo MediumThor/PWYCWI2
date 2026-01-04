@@ -6,3 +6,4 @@ VITE_SAILDASH_WIDGET_CDN=https://cdn.saildash.club/widgets/v1/saildash-widgets.j
 
 This file should be named .env (not .env.example) and should NOT be committed to git.
 
+
