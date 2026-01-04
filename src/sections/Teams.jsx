@@ -36,20 +36,19 @@ export default function Teams() {
         </a>
       }
     >
-      <div className="max-w-4xl mx-auto">
-        {/* SailDash Teams Widget */}
-        <div
-          id="saildash-teams-bfMuyZXkruEgTumgYOTI"
-          data-saildash-teams
-          data-club="bfMuyZXkruEgTumgYOTI"
-          data-theme="dark"
-          data-limit="10"
-          className={cn(
-            'min-h-[300px] rounded-xl border border-text/10',
-            'bg-text/5 p-6'
-          )}
-        />
-      </div>
+      {/* SailDash Teams Widget */}
+      <div
+        id="saildash-teams-bfMuyZXkruEgTumgYOTI"
+        data-saildash-teams
+        data-club="bfMuyZXkruEgTumgYOTI"
+        data-theme="dark"
+        data-limit="10"
+        className={cn(
+          'min-h-[300px] rounded-xl border border-text/10',
+          'bg-text/5 p-6',
+          'w-full max-w-4xl mx-auto'
+        )}
+      />
     </Section>
   )
 }
