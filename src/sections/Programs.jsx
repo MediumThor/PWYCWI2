@@ -49,15 +49,22 @@ export default function Programs() {
               key={program.title}
               className={cn(
                 'bg-text/5 border border-text/10 rounded-xl p-6',
-                'flex flex-col items-center text-center'
+                'flex flex-col items-center text-center',
+                'group'
               )}
             >
               <div
                 className={cn(
-                  'w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mb-4'
+                  'w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mb-4',
+                  'transition-all duration-300'
                 )}
               >
-                <Icon className={cn('w-8 h-8', program.color)} />
+                <Icon className={cn(
+                  'w-8 h-8 transition-all duration-300',
+                  program.color,
+                  'group-hover:drop-shadow-[0_0_12px_rgba(212,175,55,0.6)]',
+                  'group-hover:scale-110'
+                )} />
               </div>
               <h3 className="text-xl font-heading font-semibold text-text mb-3">
                 {program.title}
