@@ -10,7 +10,7 @@ export default {
         background: '#0a0e1a',
         text: '#f5f5f5',
         accent: {
-          DEFAULT: '#FFD700',
+          DEFAULT: '#D4AF37',
           orange: '#ff6b35',
         },
       },
