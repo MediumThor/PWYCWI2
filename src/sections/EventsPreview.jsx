@@ -20,9 +20,9 @@ export default function EventsPreview() {
     <Section id="events" title="Upcoming Public Events">
       {/* SailDash Events Widget */}
       <div
-        id="saildash-events-bfMuyZXkruEgTumgYOTI"
+        id="saildash-events-Xmnr4JbNLrrbG159npUA"
         data-saildash-events
-        data-club="bfMuyZXkruEgTumgYOTI"
+        data-club="Xmnr4JbNLrrbG159npUA"
         data-theme="dark"
         data-limit="10"
         className={cn(

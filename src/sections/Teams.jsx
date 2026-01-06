@@ -38,9 +38,9 @@ export default function Teams() {
     >
       {/* SailDash Teams Widget */}
       <div
-        id="saildash-teams-bfMuyZXkruEgTumgYOTI"
+        id="saildash-teams-Xmnr4JbNLrrbG159npUA"
         data-saildash-teams
-        data-club="bfMuyZXkruEgTumgYOTI"
+        data-club="Xmnr4JbNLrrbG159npUA"
         data-theme="dark"
         data-limit="10"
         className={cn(
