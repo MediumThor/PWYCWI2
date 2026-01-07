@@ -15,7 +15,13 @@ export default function WidgetLoader({ widgetId, className, widgetProps = {}, ..
 
   // Check if widget has been rendered by the script
   useEffect(() => {
+    let observer = null
+    let timeout = null
+    let mounted = true
+
     const checkWidgetLoaded = () => {
+      if (!mounted) return false
+      
       const widgetElement = document.getElementById(widgetId)
       if (widgetElement) {
         // Check if widget has meaningful content (more than just empty or loading state)
@@ -23,9 +29,11 @@ export default function WidgetLoader({ widgetId, className, widgetProps = {}, ..
                           widgetElement.textContent?.trim().length > 0
         
         if (hasContent && !widgetElement.textContent?.includes('Loading')) {
-          setIsWidgetLoaded(true)
-          setIsLoading(false)
-          setHasError(false)
+          if (mounted) {
+            setIsWidgetLoaded(true)
+            setIsLoading(false)
+            setHasError(false)
+          }
           return true
         }
       }
@@ -33,65 +41,115 @@ export default function WidgetLoader({ widgetId, className, widgetProps = {}, ..
     }
 
     // Check immediately
-    if (checkWidgetLoaded()) return
+    if (checkWidgetLoaded()) {
+      return () => {
+        mounted = false
+      }
+    }
 
     // Set up MutationObserver to watch for widget content
-    const observer = new MutationObserver(() => {
-      if (checkWidgetLoaded()) {
-        observer.disconnect()
-      }
-    })
-
     const widgetElement = document.getElementById(widgetId)
-    if (widgetElement) {
-      observer.observe(widgetElement, {
-        childList: true,
-        subtree: true,
-        characterData: true,
+    if (widgetElement && mounted) {
+      observer = new MutationObserver(() => {
+        if (checkWidgetLoaded() && observer) {
+          try {
+            observer.disconnect()
+          } catch (e) {
+            // Already disconnected
+          }
+        }
       })
+
+      try {
+        observer.observe(widgetElement, {
+          childList: true,
+          subtree: true,
+          characterData: true,
+        })
+      } catch (e) {
+        console.warn('Could not observe widget element:', e)
+      }
     }
 
     // Fallback timeout - stop loading after 10 seconds even if content hasn't loaded
-    const timeout = setTimeout(() => {
-      if (!isWidgetLoaded) {
-        checkWidgetLoaded()
-        if (!isWidgetLoaded && !hasError) {
-          setIsLoading(false)
+    timeout = setTimeout(() => {
+      if (mounted) {
+        const loaded = checkWidgetLoaded()
+        if (!loaded) {
+          setIsLoading(prev => {
+            if (prev && mounted) {
+              return false
+            }
+            return prev
+          })
+        }
+        if (observer) {
+          try {
+            observer.disconnect()
+          } catch (e) {
+            // Already disconnected
+          }
         }
       }
-      observer.disconnect()
     }, 10000)
 
     return () => {
-      observer.disconnect()
-      clearTimeout(timeout)
+      mounted = false
+      if (observer) {
+        try {
+          observer.disconnect()
+        } catch (e) {
+          // Observer already disconnected
+        }
+      }
+      if (timeout) {
+        clearTimeout(timeout)
+      }
     }
-  }, [widgetId, isWidgetLoaded, hasError])
+  }, [widgetId])
 
   // Monitor script loading errors
   useEffect(() => {
+    let errorTimeout = null
+    
     const checkScriptError = () => {
       const scriptElement = document.querySelector('script[src*="saildash-widgets.js"]')
       if (scriptElement) {
         // Check if script failed to load (no onload event after reasonable time)
-        const errorTimeout = setTimeout(() => {
+        errorTimeout = setTimeout(() => {
           // Only set error if we've waited and nothing loaded
-          if (isLoading && !isWidgetLoaded) {
-            setHasError(true)
-            setIsLoading(false)
-          }
+          setIsLoading(prev => {
+            if (prev && !isWidgetLoaded) {
+              setHasError(true)
+              return false
+            }
+            return prev
+          })
         }, 8000)
 
-        scriptElement.onload = () => {
-          clearTimeout(errorTimeout)
+        const handleLoad = () => {
+          if (errorTimeout) {
+            clearTimeout(errorTimeout)
+          }
         }
-
-        return () => clearTimeout(errorTimeout)
+        
+        scriptElement.addEventListener('load', handleLoad)
+        
+        return () => {
+          if (errorTimeout) {
+            clearTimeout(errorTimeout)
+          }
+          scriptElement.removeEventListener('load', handleLoad)
+        }
       }
     }
 
-    checkScriptError()
-  }, [isLoading, isWidgetLoaded])
+    const cleanup = checkScriptError()
+    
+    return () => {
+      if (cleanup) cleanup()
+    }
+  }, [isWidgetLoaded])
 
   const handleRetry = () => {
     if (retryCount < MAX_RETRIES) {
@@ -106,10 +164,15 @@ export default function WidgetLoader({ widgetId, className, widgetProps = {}, ..
         widgetElement.innerHTML = ''
       }
 
-      // Reload the widget script
+      // Reload the widget script - safely check if it exists and is a child before removing
       const existingScript = document.querySelector('script[src*="saildash-widgets.js"]')
-      if (existingScript) {
-        existingScript.remove()
+      if (existingScript && existingScript.parentNode) {
+        try {
+          existingScript.parentNode.removeChild(existingScript)
+        } catch (e) {
+          // Script already removed or not a child, continue anyway
+          console.warn('Could not remove script:', e)
+        }
       }
 
       const script = document.createElement('script')
