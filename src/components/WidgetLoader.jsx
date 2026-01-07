@@ -30,9 +30,14 @@ export default function WidgetLoader({ widgetId, className, widgetProps = {}, ..
         
         if (hasContent && !widgetElement.textContent?.includes('Loading')) {
           if (mounted) {
-            setIsWidgetLoaded(true)
-            setIsLoading(false)
-            setHasError(false)
+            // Use requestAnimationFrame to avoid forcing layout before styles are loaded
+            requestAnimationFrame(() => {
+              if (mounted) {
+                setIsWidgetLoaded(true)
+                setIsLoading(false)
+                setHasError(false)
+              }
+            })
           }
           return true
         }
@@ -40,36 +45,52 @@ export default function WidgetLoader({ widgetId, className, widgetProps = {}, ..
       return false
     }
 
-    // Check immediately
-    if (checkWidgetLoaded()) {
-      return () => {
-        mounted = false
+    // Wait for stylesheets to load before doing DOM operations
+    const waitForStyles = (callback) => {
+      if (document.readyState === 'complete') {
+        // Styles should be loaded, use RAF to avoid forcing layout
+        requestAnimationFrame(callback)
+      } else {
+        // Wait for load event which fires after stylesheets are loaded
+        window.addEventListener('load', () => {
+          requestAnimationFrame(callback)
+        }, { once: true })
       }
     }
 
-    // Set up MutationObserver to watch for widget content
-    const widgetElement = document.getElementById(widgetId)
-    if (widgetElement && mounted) {
-      observer = new MutationObserver(() => {
-        if (checkWidgetLoaded() && observer) {
-          try {
-            observer.disconnect()
-          } catch (e) {
-            // Already disconnected
+    // Set up MutationObserver after styles are loaded
+    waitForStyles(() => {
+      if (!mounted) return
+      
+      // Check if widget is already loaded
+      if (checkWidgetLoaded()) {
+        return
+      }
+
+      // Set up MutationObserver to watch for widget content
+      const widgetElement = document.getElementById(widgetId)
+      if (widgetElement && mounted) {
+        observer = new MutationObserver(() => {
+          if (checkWidgetLoaded() && observer) {
+            try {
+              observer.disconnect()
+            } catch (e) {
+              // Already disconnected
+            }
           }
-        }
-      })
-
-      try {
-        observer.observe(widgetElement, {
-          childList: true,
-          subtree: true,
-          characterData: true,
         })
-      } catch (e) {
-        console.warn('Could not observe widget element:', e)
+
+        try {
+          observer.observe(widgetElement, {
+            childList: true,
+            subtree: true,
+            characterData: true,
+          })
+        } catch (e) {
+          console.warn('Could not observe widget element:', e)
+        }
       }
-    }
+    })
 
     // Fallback timeout - stop loading after 10 seconds even if content hasn't loaded
     timeout = setTimeout(() => {
@@ -187,31 +208,35 @@ export default function WidgetLoader({ widgetId, className, widgetProps = {}, ..
   }
 
   return (
-    <motion.div
-      id={widgetId}
+    <div
       ref={widgetRef}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{
-        opacity: isWidgetLoaded ? 1 : 0,
-        y: isWidgetLoaded ? 0 : 10,
-      }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      className={cn(
-        'relative min-h-[300px]',
-        isWidgetLoaded ? 'z-10' : 'opacity-0 pointer-events-none',
-        className
-      )}
-      {...widgetProps}
-      {...props}
+      className={cn('relative min-h-[300px]', className)}
     >
+      <motion.div
+        id={widgetId}
+        initial={false}
+        animate={{
+          opacity: isWidgetLoaded ? 1 : 0,
+          y: isWidgetLoaded ? 0 : 10,
+        }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+        className={cn(
+          'relative w-full h-full',
+          !isWidgetLoaded && 'opacity-0 pointer-events-none'
+        )}
+        {...widgetProps}
+        {...props}
+      />
       {/* Loading Skeleton */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isLoading && !hasError && !isWidgetLoaded && (
           <motion.div
+            key="loading"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
             className="absolute inset-0 flex flex-col items-center justify-center p-6 z-20"
+            style={{ pointerEvents: 'none' }}
           >
             <div className="space-y-4 w-full max-w-md">
               {/* Animated spinner */}
@@ -240,14 +265,16 @@ export default function WidgetLoader({ widgetId, className, widgetProps = {}, ..
       </AnimatePresence>
 
       {/* Error State */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {hasError && !isWidgetLoaded && (
           <motion.div
+            key="error"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
             className="absolute inset-0 flex flex-col items-center justify-center p-6 z-20"
+            style={{ pointerEvents: 'auto' }}
           >
             <div className="text-center space-y-4 max-w-md">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-red-500/10 rounded-full border border-red-500/20">
@@ -285,7 +312,7 @@ export default function WidgetLoader({ widgetId, className, widgetProps = {}, ..
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   )
 }
 
