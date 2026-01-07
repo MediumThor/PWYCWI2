@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import Section from '../components/Section'
+import WidgetLoader from '../components/WidgetLoader'
 import { cn } from '../utils/cn'
 import { ExternalLink } from 'lucide-react'
 
@@ -37,18 +38,20 @@ export default function Teams() {
       }
     >
       {/* SailDash Teams Widget */}
-      <div
-        id="saildash-teams-Xmnr4JbNLrrbG159npUA"
-        data-saildash-teams
-        data-club="Xmnr4JbNLrrbG159npUA"
-        data-theme="dark"
-        data-limit="10"
+      <WidgetLoader
+        widgetId="saildash-teams-Xmnr4JbNLrrbG159npUA"
         className={cn(
-          'min-h-[300px] rounded-xl border border-text/10',
-          'bg-text/5 p-6',
+          'rounded-xl border border-text/10',
+          'bg-text/5 p-6 shadow-lg',
           '-mx-4 sm:-mx-6 md:mx-auto md:max-w-4xl',
           'rounded-none md:rounded-xl'
         )}
+        widgetProps={{
+          'data-saildash-teams': '',
+          'data-club': 'Xmnr4JbNLrrbG159npUA',
+          'data-theme': 'dark',
+          'data-limit': '10',
+        }}
       />
     </Section>
   )

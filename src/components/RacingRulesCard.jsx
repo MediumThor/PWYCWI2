@@ -7,13 +7,13 @@ export default function RacingRulesCard() {
       href="https://pwycrr.com"
       target="_blank"
       rel="noopener noreferrer"
-      className={cn(
-        'block bg-text/5 border border-text/10 rounded-xl p-6',
-        'hover:border-accent/50 hover:-translate-y-2',
-        'transition-all duration-300 ease-out',
-        'text-center group'
-      )}
-    >
+          className={cn(
+            'block bg-text/5 border border-text/10 rounded-xl p-6 shadow-lg',
+            'hover:border-accent/50 hover:-translate-y-2 hover:shadow-xl',
+            'transition-all duration-300 ease-out',
+            'text-center group'
+          )}
+        >
       <div className="flex flex-col items-center">
         <div
           className={cn(

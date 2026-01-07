@@ -9,7 +9,6 @@ const navLinks = [
   { href: '#teams', label: 'Teams' },
   { href: '#events', label: 'Events' },
   { href: '#visit', label: 'Visit' },
-  { href: '#visit', label: 'Contact' },
 ]
 
 export default function TopNav() {

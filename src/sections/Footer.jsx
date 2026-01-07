@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, ExternalLink } from 'lucide-react'
+import { Mail, Phone, MapPin, ExternalLink, Facebook, Twitter } from 'lucide-react'
 import { cn } from '../utils/cn'
 
 export default function Footer() {
@@ -92,6 +92,39 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
+          </div>
+        </div>
+
+        {/* Social Media */}
+        <div className="border-t border-text/10 pt-8 mb-8">
+          <div className="flex justify-center items-center gap-4">
+            <a
+              href="https://www.facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                'p-2 rounded-full bg-text/5 border border-text/10',
+                'hover:bg-accent/10 hover:border-accent/50',
+                'transition-all duration-200'
+              )}
+              aria-label="Facebook"
+            >
+              <Facebook className="w-5 h-5 text-text/80 hover:text-accent" />
+            </a>
+            <a
+              href="https://www.twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                'p-2 rounded-full bg-text/5 border border-text/10',
+                'hover:bg-accent/10 hover:border-accent/50',
+                'transition-all duration-200',
+                'hidden md:flex' // Hidden on mobile, visible on desktop
+              )}
+              aria-label="Twitter"
+            >
+              <Twitter className="w-5 h-5 text-text/80 hover:text-accent" />
+            </a>
           </div>
         </div>
 

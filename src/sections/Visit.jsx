@@ -15,7 +15,7 @@ export default function Visit() {
           {/* Address */}
           <div
             className={cn(
-              'bg-text/5 border border-text/10 rounded-xl p-6',
+              'bg-text/5 border border-text/10 rounded-xl p-6 shadow-lg',
               'flex flex-col gap-4'
             )}
           >
@@ -73,7 +73,7 @@ export default function Visit() {
           {/* Contact */}
           <div
             className={cn(
-              'bg-text/5 border border-text/10 rounded-xl p-6',
+              'bg-text/5 border border-text/10 rounded-xl p-6 shadow-lg',
               'flex flex-col gap-4'
             )}
           >
@@ -107,7 +107,7 @@ export default function Visit() {
         <div
           className={cn(
             'bg-gradient-to-br from-accent/10 to-accent/5',
-            'border border-accent/20 rounded-2xl p-8 md:p-10 mb-8',
+            'border border-accent/20 rounded-2xl p-8 md:p-10 mb-8 shadow-lg',
             'backdrop-blur-sm'
           )}
         >
@@ -127,8 +127,8 @@ export default function Visit() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
             <div
               className={cn(
-                'bg-text/5 border-2 border-blue-500/30 rounded-xl p-5',
-                'hover:border-blue-500/50 hover:bg-text/10',
+                'bg-text/5 border-2 border-blue-500/30 rounded-xl p-5 shadow-lg',
+                'hover:border-blue-500/50 hover:bg-text/10 hover:shadow-xl',
                 'transition-all duration-200'
               )}
             >
@@ -144,8 +144,8 @@ export default function Visit() {
             </div>
             <div
               className={cn(
-                'bg-text/5 border-2 border-purple-500/30 rounded-xl p-5',
-                'hover:border-purple-500/50 hover:bg-text/10',
+                'bg-text/5 border-2 border-purple-500/30 rounded-xl p-5 shadow-lg',
+                'hover:border-purple-500/50 hover:bg-text/10 hover:shadow-xl',
                 'transition-all duration-200'
               )}
             >
@@ -161,8 +161,8 @@ export default function Visit() {
             </div>
             <div
               className={cn(
-                'bg-text/5 border-2 border-green-500/30 rounded-xl p-5',
-                'hover:border-green-500/50 hover:bg-text/10',
+                'bg-text/5 border-2 border-green-500/30 rounded-xl p-5 shadow-lg',
+                'hover:border-green-500/50 hover:bg-text/10 hover:shadow-xl',
                 'transition-all duration-200'
               )}
             >
@@ -178,8 +178,8 @@ export default function Visit() {
             </div>
             <div
               className={cn(
-                'bg-text/5 border-2 border-orange-500/30 rounded-xl p-5',
-                'hover:border-orange-500/50 hover:bg-text/10',
+                'bg-text/5 border-2 border-orange-500/30 rounded-xl p-5 shadow-lg',
+                'hover:border-orange-500/50 hover:bg-text/10 hover:shadow-xl',
                 'transition-all duration-200'
               )}
             >
@@ -256,12 +256,12 @@ export default function Visit() {
         </div>
 
         {/* Reciprocity */}
-        <div
-          className={cn(
-            'bg-accent/10 border border-accent/20 rounded-xl p-6',
-            'text-center'
-          )}
-        >
+          <div
+            className={cn(
+              'bg-accent/10 border border-accent/20 rounded-xl p-6 shadow-lg',
+              'text-center'
+            )}
+          >
           <h3 className="text-xl font-heading font-semibold text-text mb-3">
             Reciprocal Club Privileges
           </h3>

@@ -48,7 +48,9 @@ export default function Programs() {
             <div
               key={program.title}
               className={cn(
-                'bg-text/5 border border-text/10 rounded-xl p-6',
+                'bg-text/5 border border-text/10 rounded-xl p-6 shadow-lg',
+                'hover:shadow-xl hover:-translate-y-2',
+                'transition-all duration-300 ease-out',
                 'flex flex-col items-center text-center',
                 'group'
               )}
